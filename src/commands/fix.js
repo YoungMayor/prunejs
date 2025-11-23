@@ -2,14 +2,17 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const ora = require('ora');
-const { loadConfig } = require('../utils/config');
+const { loadConfig, validateConfig } = require('../utils/config');
 const UnusedCodeFinder = require('../utils/analyzer');
 
 async function fixCommand() {
-    const spinner = ora('Scanning for unused code to fix...').start();
-
+    let spinner;
     try {
         const config = loadConfig();
+        await validateConfig(config);
+
+        spinner = ora('Scanning for unused code to fix...').start();
+
         const projectRoot = process.cwd();
         const finder = new UnusedCodeFinder(projectRoot, config);
 
@@ -100,7 +103,7 @@ async function fixCommand() {
         console.log(`\n📄 Fix report saved to: ${chalk.cyan(reportPath)}`);
 
     } catch (error) {
-        spinner.fail('Fix failed');
+        if (spinner) spinner.fail('Fix failed');
         console.error(error);
     }
 }

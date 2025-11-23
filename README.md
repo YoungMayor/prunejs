@@ -1,21 +1,40 @@
 # PruneJS
 
-PruneJS is a powerful tool to scan your JavaScript/TypeScript codebase and detect unused files, functions, classes, and exports. It helps you keep your project clean and maintainable.
+**PruneJS** is a powerful, configurable CLI tool designed to keep your JavaScript and TypeScript projects clean and maintainable. It scans your codebase to detect unused files, functions, classes, and exports, and can automatically remove them for you.
 
 ## Features
 
-- **Scan**: Detect unused exports and non-exported declarations.
-- **Fix**: Automatically remove unused code (experimental).
-- **Configurable**: Exclude directories and specify file extensions.
-- **Reports**: Generates detailed Markdown reports.
+- **Smart Scanning**: Detects unused exports and non-exported declarations (dead code).
+- **Safe Fixes**: Automatically removes unused code while preserving structure using brace counting and syntax awareness.
+- **Configurable**: Support for `includeDirs` (whitelist) and `excludeDirs` (blacklist) for precise control.
+- **Safety Checks**: Warns you if you attempt to scan typically excluded directories (like `node_modules`).
+- **Detailed Reports**: Generates comprehensive Markdown reports of your codebase's health.
 
 ## Installation
+
+You can install PruneJS globally or as a development dependency in your project.
+
+### Global Installation
 
 ```bash
 npm install -g prunejs
 ```
 
-Or run it directly with `npx`:
+Then run it using
+
+```bash
+prunejs <command>
+```
+
+### Local Installation (Recommended)
+
+Install as a dev dependency to ensure everyone on your team uses the same version.
+
+```bash
+npm install -D prunejs
+```
+
+Then run it using `npx`:
 
 ```bash
 npx prunejs <command>
@@ -23,40 +42,47 @@ npx prunejs <command>
 
 ## Usage
 
-### Initialize
+### 1. Initialize
 
 Set up PruneJS in your project. This creates a `.prunejs.config.js` file and updates your `.gitignore`.
 
 ```bash
-prunejs init
+prunejs init # or npx prunejs init
 ```
 
-### Scan
+### 2. Scan
 
-Scan your codebase for unused code.
+Scan your codebase for unused code. This command analyzes your project based on your configuration and outputs a summary.
 
 ```bash
-prunejs scan
+prunejs scan # or npx prunejs scan
 ```
 
-This will output a summary to the console and generate a detailed report in `.prunejs/report_<timestamp>.md`.
+- **Output**: A summary in the console and a detailed report in `.prunejs/report_<timestamp>.md`.
 
-### Fix
+### 3. Fix
 
 Automatically remove unused code found by the scanner.
 
 ```bash
-prunejs fix
+prunejs fix # or npx prunejs fix
 ```
 
-**Note**: The `fix` command is powerful. It attempts to identify the full block of code (function, class, etc.) and remove it. **Always commit your changes before running `fix` so you can revert if needed.**
+- **Safety**: PruneJS processes files carefully to ensure that removing one item doesn't break line numbers for subsequent items.
+- **Report**: Generates a log of all actions taken in `.prunejs/fix_<timestamp>.md`.
+
+> [!IMPORTANT]
+> **Always commit your changes before running `fix`.** While PruneJS is designed to be safe, automated code removal should always be reviewed.
 
 ## Configuration
 
-The `prunejs init` command creates a `.prunejs.config.js` file:
+PruneJS uses a `.prunejs.config.js` file in your project root. If not present, it uses sensible defaults.
+
+### Default Configuration
 
 ```javascript
 module.exports = {
+  // Directories to exclude from scanning
   excludeDirs: [
     'node_modules',
     '.next',
@@ -68,19 +94,54 @@ module.exports = {
     '.vercel',
     '.prunejs'
   ],
+  // Directories to include (defaults to current directory '.')
+  includeDirs: ['src'],
+  // File extensions to analyze
   includeExtensions: ['.ts', '.tsx', '.js', '.jsx']
 };
 ```
 
-You can customize `excludeDirs` and `includeExtensions` to fit your project needs.
+### Customizing Configuration
 
-## How it works
+You can customize the behavior by editing `.prunejs.config.js`.
 
-PruneJS analyzes your code to find:
-1.  **Exports**: Functions, classes, variables, etc., that are exported but never imported in other files.
-2.  **Non-exported Declarations**: Functions and classes defined locally but never used within the same file.
+#### `includeDirs` vs `excludeDirs`
 
-It uses regex-based pattern matching and brace counting to identify code blocks. While effective for most standard code styles, it may have limitations with complex or unusual syntax.
+PruneJS supports both whitelisting (`includeDirs`) and blacklisting (`excludeDirs`) for maximum flexibility and safety.
+
+- **`includeDirs`**: Only files within these directories will be scanned. Defaults to `['.']` (project root).
+- **`excludeDirs`**: Files within these directories will be ignored, *even if they are inside an included directory*.
+
+**Example: Scan only `src` but ignore `src/temp`**
+
+```javascript
+module.exports = {
+  includeDirs: ['src'],
+  excludeDirs: ['src/temp', 'node_modules', ...], // It's good practice to keep standard excludes
+  // ...
+};
+```
+
+**Logic**:
+1. PruneJS iterates through `includeDirs`.
+2. For each directory, it recursively finds files.
+3. It skips any file or subdirectory that matches `excludeDirs`.
+
+### Safety Checks
+
+To prevent accidents, PruneJS performs a safety check before running. If your `includeDirs` contains a directory that is typically excluded (like `node_modules`), PruneJS will warn you and ask for confirmation before proceeding.
+
+```text
+⚠️  Warning: You have included directories that are typically excluded: node_modules
+? Are you sure you want to proceed with scanning these directories? (y/N)
+```
+
+## How it Works
+
+1.  **Analysis**: PruneJS parses your code to find all exports and local declarations.
+2.  **Usage Tracking**: It tracks where every export is imported and where every local declaration is used.
+3.  **Cross-File Detection**: It correctly identifies if an export is used in *any* other file in your project.
+4.  **Block Detection**: When removing code, it uses brace counting to identify the full scope of functions and classes, ensuring clean removal.
 
 ## License
 

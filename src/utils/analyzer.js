@@ -8,11 +8,29 @@ class UnusedCodeFinder {
         this.nonExportedDeclarations = new Map();
         this.imports = new Map(); // name -> Set<filePath>
         this.excludeDirs = config.excludeDirs || [];
+        this.includeDirs = config.includeDirs || ['.'];
         this.includeExtensions = config.includeExtensions || [];
     }
 
     async analyze() {
-        const files = this.getAllFiles(this.projectRoot);
+        let files = [];
+        for (const dir of this.includeDirs) {
+            const fullPath = path.resolve(this.projectRoot, dir);
+            if (fs.existsSync(fullPath)) {
+                if (fs.statSync(fullPath).isDirectory()) {
+                    files = files.concat(this.getAllFiles(fullPath));
+                } else if (fs.statSync(fullPath).isFile()) {
+                    // If user explicitly includes a file, check extension
+                    const ext = path.extname(fullPath);
+                    if (this.includeExtensions.includes(ext)) {
+                        files.push(fullPath);
+                    }
+                }
+            }
+        }
+
+        // Remove duplicates if any
+        files = [...new Set(files)];
 
         for (const file of files) {
             this.extractExports(file);
