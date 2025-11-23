@@ -3,20 +3,29 @@ const path = require('path');
 const chalk = require('chalk');
 const { getDefaultConfig, CONFIG_FILE } = require('../utils/config');
 
-function initCommand() {
+const inquirer = require('inquirer');
+
+async function initCommand(options) {
   console.log(chalk.blue('Initializing prunejs...'));
 
   const configPath = path.resolve(process.cwd(), CONFIG_FILE);
+  const force = options && options.force;
 
-  if (fs.existsSync(configPath)) {
+  if (fs.existsSync(configPath) && !force) {
     console.log(chalk.yellow(`${CONFIG_FILE} already exists.`));
-  } else {
-    const defaultConfig = getDefaultConfig();
-    const configContent = `module.exports = ${JSON.stringify(defaultConfig, null, 2)};\n`;
-
-    fs.writeFileSync(configPath, configContent);
-    console.log(chalk.green(`Created ${CONFIG_FILE}`));
+    console.log(chalk.red('Use --force to overwrite.'));
+    return;
   }
+
+  if (fs.existsSync(configPath) && force) {
+    console.log(chalk.yellow(`Overwriting ${CONFIG_FILE}...`));
+  }
+
+  constQDConfig = getDefaultConfig();
+  const configContent = `module.exports = ${JSON.stringify(defaultConfig, null, 2)};\n`;
+
+  fs.writeFileSync(configPath, configContent);
+  console.log(chalk.green(`Created ${CONFIG_FILE}`));
 
   // Update .gitignore
   const gitignorePath = path.resolve(process.cwd(), '.gitignore');

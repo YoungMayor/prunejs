@@ -42,6 +42,16 @@ npx prunejs <command>
 
 ## Usage
 
+### Commands
+
+- `prunejs init`: Initialize configuration. Use `--force` to overwrite existing config.
+- `prunejs scan`: Scan the codebase for unused code.
+- `prunejs fix`: Remove unused code found by the scan.
+- `prunejs global`: Install or update `prunejs` globally (interactive).
+- `prunejs local`: Install or update `prunejs` as a local dev dependency (interactive).
+- `prunejs clean`: Clean up report files or the `.prunejs` directory (interactive).
+- `prunejs`: Run without arguments to launch the interactive menu.
+
 ### 1. Initialize
 
 Set up PruneJS in your project. This creates a `.prunejs.config.js` file and updates your `.gitignore`.
