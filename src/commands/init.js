@@ -3,8 +3,6 @@ const path = require('path');
 const chalk = require('chalk');
 const { getDefaultConfig, CONFIG_FILE } = require('../utils/config');
 
-const inquirer = require('inquirer');
-
 async function initCommand(options) {
   console.log(chalk.blue('Initializing prunejs...'));
 
@@ -21,7 +19,7 @@ async function initCommand(options) {
     console.log(chalk.yellow(`Overwriting ${CONFIG_FILE}...`));
   }
 
-  constQDConfig = getDefaultConfig();
+  const defaultConfig = getDefaultConfig();
   const configContent = `module.exports = ${JSON.stringify(defaultConfig, null, 2)};\n`;
 
   fs.writeFileSync(configPath, configContent);
