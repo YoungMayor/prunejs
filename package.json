@@ -7,7 +7,9 @@
     "prunejs": "./bin/prune.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "format": "prettier --write .",
+    "lint": "eslint ."
   },
   "license": "MIT",
   "author": {
@@ -25,5 +27,13 @@
     "ignore": "^7.0.5",
     "inquirer": "^8.2.7",
     "ora": "^5.4.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "jest": "^30.2.0",
+    "prettier": "^3.6.2"
   }
 }

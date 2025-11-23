@@ -7,23 +7,14 @@ const fixCommand = require('./commands/fix');
 const program = new Command();
 
 program
-    .name('prunejs')
-    .description('Scan JS/TS projects and detects unused files, functions, classes and exports')
-    .version(packageJson.version);
+  .name('prunejs')
+  .description('Scan JS/TS projects and detects unused files, functions, classes and exports')
+  .version(packageJson.version);
 
-program
-    .command('init')
-    .description('Initialize prunejs configuration')
-    .action(initCommand);
+program.command('init').description('Initialize prunejs configuration').action(initCommand);
 
-program
-    .command('scan')
-    .description('Scan the codebase for unused code')
-    .action(scanCommand);
+program.command('scan').description('Scan the codebase for unused code').action(scanCommand);
 
-program
-    .command('fix')
-    .description('Remove unused code found by scan')
-    .action(fixCommand);
+program.command('fix').description('Remove unused code found by scan').action(fixCommand);
 
 program.parse(process.argv);

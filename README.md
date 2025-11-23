@@ -92,7 +92,7 @@ module.exports = {
     'out',
     'coverage',
     '.vercel',
-    '.prunejs'
+    '.prunejs',
   ],
   // Directories to include (defaults to current directory '.')
   includeDirs: ['src'],
@@ -100,7 +100,7 @@ module.exports = {
   // File extensions to analyze
   includeExtensions: ['.ts', '.tsx', '.js', '.jsx'],
   // Exclude files ignored by .gitignore (defaults to true)
-  excludeIgnoredFiles: true
+  excludeIgnoredFiles: true,
 };
 ```
 
@@ -113,7 +113,7 @@ You can customize the behavior by editing `.prunejs.config.js`.
 PruneJS supports both whitelisting (`includeDirs`) and blacklisting (`excludeDirs`) for maximum flexibility and safety.
 
 - **`includeDirs`**: Only files within these directories will be scanned. Defaults to `['.']` (project root).
-- **`excludeDirs`**: Files within these directories will be ignored, *even if they are inside an included directory*.
+- **`excludeDirs`**: Files within these directories will be ignored, _even if they are inside an included directory_.
 - **`excludeIgnoredFiles`**: If set to `true` (default), PruneJS will automatically ignore any file listed in your `.gitignore`.
 
 **Example: Scan only `src` but ignore `src/temp`**
@@ -127,6 +127,7 @@ module.exports = {
 ```
 
 **Logic**:
+
 1. PruneJS iterates through `includeDirs`.
 2. For each directory, it recursively finds files.
 3. It skips any file or subdirectory that matches `excludeDirs`.
@@ -145,7 +146,7 @@ To prevent accidents, PruneJS performs a safety check before running. If your `i
 
 1.  **Analysis**: PruneJS parses your code to find all exports and local declarations.
 2.  **Usage Tracking**: It tracks where every export is imported and where every local declaration is used.
-3.  **Cross-File Detection**: It correctly identifies if an export is used in *any* other file in your project.
+3.  **Cross-File Detection**: It correctly identifies if an export is used in _any_ other file in your project.
 4.  **Block Detection**: When removing code, it uses brace counting to identify the full scope of functions and classes, ensuring clean removal.
 
 ## License
