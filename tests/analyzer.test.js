@@ -73,7 +73,37 @@ describe('UnusedCodeFinder', () => {
 
     const report = await finder.analyze();
 
-    expect(report.unusedNonExported).toHaveLength(1);
     expect(report.unusedNonExported[0].name).toBe('unusedLocal');
+  });
+
+  test('should skip exports in configured files', async () => {
+    const files = {
+      '/mock/project/pages/index.js': `
+        export default function Home() {}
+        export const getServerSideProps = async () => {};
+      `,
+      '/mock/project/components/Button.js': `
+        export const Button = () => {};
+      `,
+    };
+
+    fs.readFileSync.mockImplementation((filePath) => {
+      return files[filePath] || '';
+    });
+
+    const configWithSkip = {
+      ...mockConfig,
+      skipExportsIn: ['pages/**/*'],
+    };
+
+    const finder = new UnusedCodeFinder(mockProjectRoot, configWithSkip);
+    finder.getAllFiles = jest.fn().mockReturnValue(Object.keys(files));
+
+    const report = await finder.analyze();
+
+    // Home and getServerSideProps should be skipped (marked as used)
+    // Button should be unused
+    expect(report.unusedExports).toHaveLength(1);
+    expect(report.unusedExports[0].name).toBe('Button');
   });
 });

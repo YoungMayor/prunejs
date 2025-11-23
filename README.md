@@ -76,31 +76,39 @@ prunejs fix # or npx prunejs fix
 
 ## Configuration
 
-PruneJS uses a `.prunejs.config.js` file in your project root. If not present, it uses sensible defaults.
-
-### Default Configuration
+You can configure `prunejs` by creating a `.prunejs.config.js` file in your project root.
 
 ```javascript
 module.exports = {
   // Directories to exclude from scanning
-  excludeDirs: [
-    'node_modules',
-    '.next',
-    '.git',
-    'dist',
-    'build',
-    'out',
-    'coverage',
-    '.vercel',
-    '.prunejs',
-  ],
-  // Directories to include (defaults to current directory '.')
-  includeDirs: ['src'],
-  // File extensions to analyze
-  // File extensions to analyze
+  excludeDirs: ['node_modules', '.next', 'dist', 'build', 'coverage'],
+
+  // Directories to include in scanning (whitelist)
+  // If specified, only these directories will be scanned (respecting excludeDirs)
+  includeDirs: ['.'],
+
+  // File extensions to scan
   includeExtensions: ['.ts', '.tsx', '.js', '.jsx'],
-  // Exclude files ignored by .gitignore (defaults to true)
+
+  // Whether to exclude files ignored by .gitignore (defaults to true)
   excludeIgnoredFiles: true,
+
+  // Glob patterns for files where exports should be considered used (e.g., framework files)
+  // This is useful for Next.js pages, API routes, etc., where exports are used by the framework.
+  skipExportsIn: [
+    'pages/**/*',
+    'src/pages/**/*',
+    'app/**/*',
+    'src/app/**/*',
+    '**/layout.{js,jsx,ts,tsx}',
+    '**/page.{js,jsx,ts,tsx}',
+    '**/route.{js,jsx,ts,tsx}',
+    '**/loading.{js,jsx,ts,tsx}',
+    '**/error.{js,jsx,ts,tsx}',
+    '**/not-found.{js,jsx,ts,tsx}',
+    '**/template.{js,jsx,ts,tsx}',
+    '**/default.{js,jsx,ts,tsx}',
+  ],
 };
 ```
 
@@ -144,10 +152,10 @@ To prevent accidents, PruneJS performs a safety check before running. If your `i
 
 ## How it Works
 
-1.  **Analysis**: PruneJS parses your code to find all exports and local declarations.
-2.  **Usage Tracking**: It tracks where every export is imported and where every local declaration is used.
-3.  **Cross-File Detection**: It correctly identifies if an export is used in _any_ other file in your project.
-4.  **Block Detection**: When removing code, it uses brace counting to identify the full scope of functions and classes, ensuring clean removal.
+1. **Analysis**: PruneJS parses your code to find all exports and local declarations.
+2. **Usage Tracking**: It tracks where every export is imported and where every local declaration is used.
+3. **Cross-File Detection**: It correctly identifies if an export is used in _any_ other file in your project.
+4. **Block Detection**: When removing code, it uses brace counting to identify the full scope of functions and classes, ensuring clean removal.
 
 ## License
 

@@ -12,6 +12,7 @@ class UnusedCodeFinder {
     this.includeDirs = config.includeDirs || ['.'];
     this.includeExtensions = config.includeExtensions || [];
     this.ig = ignore();
+    this.skipExportsManager = ignore().add(config.skipExportsIn || []);
 
     if (config.excludeIgnoredFiles) {
       this.loadGitignore();
@@ -286,6 +287,13 @@ class UnusedCodeFinder {
 
       // Check each export occurrence
       exportInfos.forEach((info) => {
+        // Check if file should be skipped for export analysis
+        const relativePath = path.relative(this.projectRoot, info.filePath);
+        if (this.skipExportsManager.ignores(relativePath)) {
+          info.isUsed = true;
+          return;
+        }
+
         // If used in another file, it's used
         let usedInOtherFile = false;
         for (const file of usageFiles) {

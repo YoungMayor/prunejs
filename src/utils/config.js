@@ -37,6 +37,7 @@ function loadConfig() {
     includeExtensions: userConfig.includeExtensions || DEFAULT_INCLUDE_EXTENSIONS,
     excludeIgnoredFiles:
       userConfig.excludeIgnoredFiles !== undefined ? userConfig.excludeIgnoredFiles : true,
+    skipExportsIn: userConfig.skipExportsIn || getDefaultConfig().skipExportsIn,
   };
 }
 
@@ -46,6 +47,20 @@ function getDefaultConfig() {
     includeDirs: ['.'],
     includeExtensions: DEFAULT_INCLUDE_EXTENSIONS,
     excludeIgnoredFiles: true,
+    skipExportsIn: [
+      'pages/**/*',
+      'src/pages/**/*',
+      'app/**/*',
+      'src/app/**/*',
+      '**/layout.{js,jsx,ts,tsx}',
+      '**/page.{js,jsx,ts,tsx}',
+      '**/route.{js,jsx,ts,tsx}',
+      '**/loading.{js,jsx,ts,tsx}',
+      '**/error.{js,jsx,ts,tsx}',
+      '**/not-found.{js,jsx,ts,tsx}',
+      '**/template.{js,jsx,ts,tsx}',
+      '**/default.{js,jsx,ts,tsx}',
+    ],
   };
 }
 

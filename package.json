@@ -9,7 +9,11 @@
   "scripts": {
     "test": "jest",
     "format": "prettier --write .",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "version:init": "npm run lint && npm run format && npm run test && npm pkg fix",
+    "version:patch": "npm run version:init && npm version patch",
+    "version:minor": "npm run version:init && npm version minor",
+    "version:major": "npm run version:init && npm version major"
   },
   "license": "MIT",
   "author": {
