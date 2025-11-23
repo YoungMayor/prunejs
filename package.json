@@ -1,0 +1,19 @@
+{
+  "name": "prunejs",
+  "version": "0.1.0",
+  "description": "Scan JS/TS projects and detects unused files, functions, classes and exports",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "ISC",
+  "author": {
+    "name": "Aghogho Meyoron",
+    "url": "https://founder.mayrlabs.com",
+    "email": "youngmayor.dev@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YoungMayor/prunejs.git"
+  }
+}
