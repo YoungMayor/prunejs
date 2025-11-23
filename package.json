@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Scan JS/TS projects and detects unused files, functions, classes and exports",
   "main": "index.js",
+  "bin": {
+    "prunejs": "./bin/prune.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +18,10 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/YoungMayor/prunejs.git"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0",
+    "ora": "^5.4.1"
   }
 }
