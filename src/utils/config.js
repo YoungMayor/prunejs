@@ -34,7 +34,8 @@ function loadConfig() {
     return {
         excludeDirs: userConfig.excludeDirs || DEFAULT_EXCLUDE_DIRS,
         includeDirs: userConfig.includeDirs || ['.'],
-        includeExtensions: userConfig.includeExtensions || DEFAULT_INCLUDE_EXTENSIONS
+        includeExtensions: userConfig.includeExtensions || DEFAULT_INCLUDE_EXTENSIONS,
+        excludeIgnoredFiles: userConfig.excludeIgnoredFiles !== undefined ? userConfig.excludeIgnoredFiles : true
     };
 }
 
@@ -42,7 +43,8 @@ function getDefaultConfig() {
     return {
         excludeDirs: DEFAULT_EXCLUDE_DIRS,
         includeDirs: ['.'],
-        includeExtensions: DEFAULT_INCLUDE_EXTENSIONS
+        includeExtensions: DEFAULT_INCLUDE_EXTENSIONS,
+        excludeIgnoredFiles: true
     };
 }
 

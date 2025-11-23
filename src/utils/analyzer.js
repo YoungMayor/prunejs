@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const ignore = require('ignore');
 
 class UnusedCodeFinder {
     constructor(projectRoot, config) {
@@ -10,6 +11,23 @@ class UnusedCodeFinder {
         this.excludeDirs = config.excludeDirs || [];
         this.includeDirs = config.includeDirs || ['.'];
         this.includeExtensions = config.includeExtensions || [];
+        this.ig = ignore();
+
+        if (config.excludeIgnoredFiles) {
+            this.loadGitignore();
+        }
+    }
+
+    loadGitignore() {
+        const gitignorePath = path.join(this.projectRoot, '.gitignore');
+        if (fs.existsSync(gitignorePath)) {
+            try {
+                const gitignoreContent = fs.readFileSync(gitignorePath, 'utf-8');
+                this.ig.add(gitignoreContent);
+            } catch (error) {
+                console.warn('Failed to load .gitignore:', error.message);
+            }
+        }
     }
 
     async analyze() {
@@ -52,6 +70,12 @@ class UnusedCodeFinder {
 
         for (const entry of entries) {
             const fullPath = path.join(dir, entry.name);
+            const relativePath = path.relative(this.projectRoot, fullPath);
+
+            // Check if ignored by .gitignore
+            if (this.ig.ignores(relativePath)) {
+                continue;
+            }
 
             if (entry.isDirectory()) {
                 if (!this.excludeDirs.includes(entry.name)) {

@@ -97,7 +97,10 @@ module.exports = {
   // Directories to include (defaults to current directory '.')
   includeDirs: ['src'],
   // File extensions to analyze
-  includeExtensions: ['.ts', '.tsx', '.js', '.jsx']
+  // File extensions to analyze
+  includeExtensions: ['.ts', '.tsx', '.js', '.jsx'],
+  // Exclude files ignored by .gitignore (defaults to true)
+  excludeIgnoredFiles: true
 };
 ```
 
@@ -111,6 +114,7 @@ PruneJS supports both whitelisting (`includeDirs`) and blacklisting (`excludeDir
 
 - **`includeDirs`**: Only files within these directories will be scanned. Defaults to `['.']` (project root).
 - **`excludeDirs`**: Files within these directories will be ignored, *even if they are inside an included directory*.
+- **`excludeIgnoredFiles`**: If set to `true` (default), PruneJS will automatically ignore any file listed in your `.gitignore`.
 
 **Example: Scan only `src` but ignore `src/temp`**
 
@@ -118,7 +122,7 @@ PruneJS supports both whitelisting (`includeDirs`) and blacklisting (`excludeDir
 module.exports = {
   includeDirs: ['src'],
   excludeDirs: ['src/temp', 'node_modules', ...], // It's good practice to keep standard excludes
-  // ...
+  excludeIgnoredFiles: true
 };
 ```
 
@@ -126,6 +130,7 @@ module.exports = {
 1. PruneJS iterates through `includeDirs`.
 2. For each directory, it recursively finds files.
 3. It skips any file or subdirectory that matches `excludeDirs`.
+4. If `excludeIgnoredFiles` is true, it skips any file matched by `.gitignore`.
 
 ### Safety Checks
 
@@ -145,4 +150,4 @@ To prevent accidents, PruneJS performs a safety check before running. If your `i
 
 ## License
 
-ISC
+MIT
