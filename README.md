@@ -50,6 +50,7 @@ npx prunejs <command>
 - `prunejs global`: Install or update `prunejs` globally (interactive).
 - `prunejs local`: Install or update `prunejs` as a local dev dependency (interactive).
 - `prunejs clean`: Clean up report files or the `.prunejs` directory (interactive).
+- `prunejs version`: Show the version of prunejs.
 - `prunejs`: Run without arguments to launch the interactive menu.
 
 ### 1. Initialize

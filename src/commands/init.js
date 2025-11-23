@@ -20,7 +20,13 @@ async function initCommand(options) {
   }
 
   const defaultConfig = getDefaultConfig();
-  const configContent = `module.exports = ${JSON.stringify(defaultConfig, null, 2)};\n`;
+  const packageJson = require('../../package.json');
+  const configContent = `/**
+ * PruneJS v${packageJson.version} Config
+ *
+ * For more information, visit https://github.com/YoungMayor/prunejs#configuration
+ */
+module.exports = ${JSON.stringify(defaultConfig, null, 2)};\n`;
 
   fs.writeFileSync(configPath, configContent);
   console.log(chalk.green(`Created ${CONFIG_FILE}`));

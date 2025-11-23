@@ -60,6 +60,9 @@ function getDefaultConfig() {
       '**/not-found.{js,jsx,ts,tsx}',
       '**/template.{js,jsx,ts,tsx}',
       '**/default.{js,jsx,ts,tsx}',
+      '**/sitemap.{js,ts}',
+      '**/siteMetadata.{js,ts}',
+      '**/*.config.{js,ts}',
     ],
   };
 }

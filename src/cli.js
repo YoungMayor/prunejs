@@ -14,7 +14,14 @@ const program = new Command();
 program
   .name('prunejs')
   .description('Scan JS/TS projects and detects unused files, functions, classes and exports')
-  .version(packageJson.version);
+  .version(packageJson.version, '-v, --version');
+
+program
+  .command('version')
+  .description('Show the version of prunejs')
+  .action(() => {
+    console.log(packageJson.version);
+  });
 
 program
   .command('init')
