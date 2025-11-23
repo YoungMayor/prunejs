@@ -151,4 +151,4 @@ To prevent accidents, PruneJS performs a safety check before running. If your `i
 
 ## License
 
-MIT
+MIT License
