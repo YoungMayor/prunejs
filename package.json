@@ -1,10 +1,10 @@
 {
   "name": "prunejs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Scan JS/TS projects and detects unused files, functions, classes and exports",
   "main": "index.js",
   "bin": {
-    "prunejs": "./bin/prune.js"
+    "prunejs": "bin/prune.js"
   },
   "scripts": {
     "test": "jest",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/YoungMayor/prunejs.git"
+    "url": "git+https://github.com/YoungMayor/prunejs.git"
   },
   "dependencies": {
     "chalk": "^4.1.2",
